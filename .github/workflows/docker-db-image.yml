@@ -1,0 +1,34 @@
+name: DB Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 
+      - 'database/*'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use docker compose to build database service
+      run: |
+        echo "building database image using docker compose..."
+        docker compose build db
+        echo "done building..."
+    - name:  Upload image to dockerhub
+    env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME}}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_LOGIN_PW }}
+      run: |
+        echo "listing all images"
+        docker images
+        echo "renaming image"
+        docker tag flexiexpensesmanager_backend-db charmflex/fem-db
+        echo "login to dockerhub"
+        docker login --username "$DOCKER_USERNMAE" --password "$DOCKER_PASSWORD"
+        echo "push to dockerhub"
+        docker push charmflex/fem-db
