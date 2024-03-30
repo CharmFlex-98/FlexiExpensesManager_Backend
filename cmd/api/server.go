@@ -43,7 +43,7 @@ func (app *Application) serve() error {
 		shutdownError <- nil
 	}()
 
-	app.logInfo(fmt.Sprintf("Starting server in env=%s", app.config.env))
+	app.logInfo(fmt.Sprintf("Test auto: Starting server in env=%s", app.config.env))
 
 	// Calling Shutdown() on our server will cause ListenAndServe() to immediately
 	// return a http.ErrServerClosed error. So if we see this error, it is actually a
