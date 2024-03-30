@@ -1,0 +1,27 @@
+name: Update and Restart App Service
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  refresh-service:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Login to DO Server
+      env:
+        DO_IP: ${{ secrets.SSH_DO_IP }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_LOGIN_PW }}
+      run: |
+        echo "login to server"
+        ssh "$DO_IP"
+        cd fem_server
+        echo "pull latest app image"
+        docker compose pull
+        echo "restart app container"
+        docker compose up -d --force-recreate --no-deps app
+        echo "done, exit"
+        
+        
