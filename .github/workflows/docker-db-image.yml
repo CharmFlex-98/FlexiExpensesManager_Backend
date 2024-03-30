@@ -9,7 +9,6 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +19,10 @@ jobs:
         docker compose build db
         echo "done building..."
     - name:  Upload image to dockerhub
-    env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME}}
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_LOGIN_PW }}
+    
       run: |
         echo "listing all images"
         docker images
