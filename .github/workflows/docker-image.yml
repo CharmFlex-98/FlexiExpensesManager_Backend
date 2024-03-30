@@ -25,7 +25,7 @@ jobs:
         echo "listing all images"
         docker images
         echo "renaming image"
-        docker tag FlexiExpensesManager-app charmflex/fem-app
+        docker tag flexiexpensesmanager_backend-app charmflex/fem-app
         echo "login to dockerhub"
         docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
         echo "push to dockerhub"
