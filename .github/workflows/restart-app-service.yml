@@ -15,6 +15,7 @@ jobs:
           host: ${{ secrets.DO_SSH_HOST }}
           username: ${{ secrets.DO_SSH_USER }}
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.DO_SSH_PW }}
           script: |
             echo "testing"
             cd fem_server
