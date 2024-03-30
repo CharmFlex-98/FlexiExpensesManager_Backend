@@ -9,22 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Configure SSH
-        env:
-          SSH_USER: ${{ secrets.DO_SSH_USER }}
-          SSH_PW: ${{ secrets.DO_SSH_PW }}
-          SSH_HOST: ${{ secrets.DO_SSH_HOST }}
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_PW" > ~/.ssh/do_ssh.key
-          chmod 600 ~/.ssh/do_ssh.key
-          cat >>~/.ssh/config <<END
-          Host DO
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/do_ssh.key
-            StrictHostKeyChecking no
-          END
-
-      - name: test cd
-        run: ssh DO 'cd fem_server'
+      - name: Execute SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_SSH_HOST }}
+          username: ${{ secrets.DO_SSH_USER }}
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          script: |
+            echo "testing"
+            cd fem_server
