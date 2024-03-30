@@ -6,14 +6,9 @@ on:
 jobs:
 
   app-deploy:
-
     runs-on: ubuntu-latest
-
-      steps:
-      name: "Deploy to staging"
-      runs-on: ubuntu-latest
     
-      steps:
+    steps:
       - name: Configure SSH
         env:
           SSH_USER: ${{ secrets.DO_SSH_USER }}
