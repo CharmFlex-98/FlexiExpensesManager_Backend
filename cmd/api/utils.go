@@ -135,6 +135,7 @@ func (app *Application) background(fn func(), r *http.Request) {
 		// Decrement before end
 		defer app.wg.Done()
 
+		// Task run in goroutine need another recover handler, it won't propagate up to our upstream recover() checker.
 		defer func() {
 			if err := recover(); err != nil {
 				app.logError(errors.New(fmt.Sprintf("%s", err)), r)

@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./deploy/docker/app/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_PATH}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/sportgether/cmd/api/
+
+  db:
+    build:
+      context: .
+      dockerfile: ./deploy/docker/db/Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_db:/sportgether_db/data
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+
+volumes:
+  postgres_db:

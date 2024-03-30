@@ -44,7 +44,6 @@ func (app *Application) serve() error {
 	}()
 
 	app.logInfo(fmt.Sprintf("Starting server in env=%s", app.config.env))
-	//certConfig := app.config.getCertConfig()
 
 	// Calling Shutdown() on our server will cause ListenAndServe() to immediately
 	// return a http.ErrServerClosed error. So if we see this error, it is actually a
