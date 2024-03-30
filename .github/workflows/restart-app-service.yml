@@ -5,23 +5,31 @@ on:
 
 jobs:
 
-  refresh-service:
+  app-deploy:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Login to DO Server
-      env:
-        DO_IP: ${{ secrets.SSH_DO_IP }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_LOGIN_PW }}
-      run: |
-        echo "login to server"
-        ssh "$DO_IP"
-        cd fem_server
-        echo "pull latest app image"
-        docker compose pull
-        echo "restart app container"
-        docker compose up -d --force-recreate --no-deps app
-        echo "done, exit"
-        
-        
+      steps:
+      name: "Deploy to staging"
+      runs-on: ubuntu-latest
+    
+      steps:
+      - name: Configure SSH
+        env:
+          SSH_USER: ${{ secrets.DO_SSH_USER }}
+          SSH_PW: ${{ secrets.DO_SSH_PW }}
+          SSH_HOST: ${{ secrets.DO_SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PW" > ~/.ssh/do_ssh.key
+          chmod 600 ~/.ssh/do_ssh.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/do_ssh.key
+            StrictHostKeyChecking no
+          END
+
+      - name: test cd
+        run: ssh do_ssh 'cd fem_server'
