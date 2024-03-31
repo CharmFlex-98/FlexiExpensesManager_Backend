@@ -5,7 +5,7 @@ on:
 
 jobs:
 
-  app-deploy:
+  db-deploy:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,7 +21,7 @@ jobs:
             cd fem_server
             echo "stop all services, and clean everything"
             docker compose down -v
-            docker system prune -a --volumes
+            echo "y" | docker system prune -a --volumes
             echo "pull latest app image from dockerhub"
             docker compose pull
             echo "Restart app container"
