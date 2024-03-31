@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Release to Firebase App Distribution
 
 on:
   workflow_dispatch
