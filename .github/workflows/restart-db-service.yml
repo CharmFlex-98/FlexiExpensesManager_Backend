@@ -1,0 +1,28 @@
+name: Update and Restart DB Service
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  app-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Execute SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_SSH_HOST }}
+          username: ${{ secrets.DO_SSH_USER }}
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.DO_SSH_PW }}
+          script: |
+            echo "cd to fem_server"
+            cd fem_server
+            echo "stop all services, and clean everything"
+            docker compose down -v
+            docker system prune -a --volumes
+            echo "pull latest app image from dockerhub"
+            docker compose pull
+            echo "Restart app container"
+            docker compose up -d
