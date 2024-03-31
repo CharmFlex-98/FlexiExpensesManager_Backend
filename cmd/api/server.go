@@ -60,5 +60,6 @@ func (app *Application) serve() error {
 
 	app.logger.Info("Stopping server gracefully")
 
+	// test
 	return nil
 }
