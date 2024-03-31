@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch
+
+jobs:
+  build-and-distribute-to-firebase:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Decrypt keystore jks file
+      env:
+        KEYSTORE_JKS_KEY: ${{ secrets.UPLOAD_KEYSTORE_JKS_ENCODED }}
+      run: |
+        echo "decrypt keystore jks and save to file"
+        cat "$KEYSTORE_JKS_KEY" | base64 --decode > ./upload_keystore.jks
+      
+    - name: Build the app and distribute to firebase
+      env:
+        KEYSTORE_PATH: "./upload_keystore.jks"
+        KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_JKS_PW }}
+        KEYSTORE_ALIAS: ${{ secrets.UPLOAD_KEYSTORE_JKS_ALIAS }}
+      run: fastlane distribute
