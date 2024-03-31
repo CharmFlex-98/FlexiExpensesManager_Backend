@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Check if triggered by authorized user
+        run: |
+          if [[ ${{ github.actor }} != 'CharmFlex-98' ]]; then
+            echo "This workflow can only be triggered by CharmFlex-98."
+            exit 1
+          fi
+          
       - name: Execute SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
