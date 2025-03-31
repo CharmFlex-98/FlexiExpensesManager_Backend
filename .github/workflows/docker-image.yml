@@ -11,6 +11,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Replacing placeholders of application properties
+      run: |
+        sed -i 's|${DATABASE_USERNAME}|${{ secrets.DATABASE_USERNAME }}|g' src/main/resources/application.properties
+        sed -i 's|${DATABASE_PASSWORD}|${{ secrets.DATABASE_PASSWORD }}|g' src/main/resources/application.properties
     - name: Use docker compose to build app service
       run: |
         echo "building web image using docker compose..."
