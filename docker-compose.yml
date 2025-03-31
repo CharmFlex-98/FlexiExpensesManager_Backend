@@ -1,6 +1,8 @@
 services:
   app:
-    image: "charmflex/fem_server"
+    build:
+      context: .
+      dockerfile: ./deploy/app/Dockerfile
     ports:
       - "3002:3000"
     depends_on:
