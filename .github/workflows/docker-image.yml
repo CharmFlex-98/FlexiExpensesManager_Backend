@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use docker compose to build app service
+      run: |
+        echo "building web image using docker compose..."
+        docker compose build app
+        echo "done building..."
+    - name:  Upload image to dockerhub
+      run: |
+        echo "listing all images"
+        docker images
+        echo "renaming image"
+        docker tag flexiexpensesmanager_backend-app charmflex/fem_server
+        echo "login to dockerhub"
+        docker login --username charmflex --password 2506980106Ming
+        echo "push to dockerhub"
+        docker push charmflex/fem_server
+      
