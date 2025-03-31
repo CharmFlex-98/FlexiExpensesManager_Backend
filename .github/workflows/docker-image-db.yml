@@ -8,10 +8,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: Replacing placeholders of application properties
