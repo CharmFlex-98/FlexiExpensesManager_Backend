@@ -39,6 +39,6 @@ jobs:
         echo "renaming image"
         docker tag flexiexpensesmanager_backend-db charmflex/fem_db
         echo "login to dockerhub"
-        docker login --username charmflex --password 2506980106Ming
+        docker login --username ${{ secrets.DOCKER_LOGIN_USERNAME }} --password ${{ secrets.DOCKER_LOGIN_PW }}
         echo "push to dockerhub"
         docker push charmflex/fem_db
