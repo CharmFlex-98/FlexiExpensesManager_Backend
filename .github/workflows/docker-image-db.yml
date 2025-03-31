@@ -1,0 +1,38 @@
+name: DB Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 
+      - 'deploy/db/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Replacing placeholders of application properties
+      run: |
+        sed -i "s|\${DATABASE_USERNAME}|${{ secrets.DATABASE_USERNAME }}|g" src/main/resources/application.properties
+        sed -i "s|\${DATABASE_PASSWORD}|${{ secrets.DATABASE_PASSWORD }}|g" src/main/resources/application.properties
+    - name: Use docker compose to build database service
+      run: |
+        echo "building database image using docker compose..."
+        docker compose build db
+        echo "done building..."
+    - name:  Upload image to dockerhub
+      run: |
+        echo "listing all images"
+        docker images
+        echo "renaming image"
+        docker tag flexiexpensesmanager_backend-db charmflex/fem_db
+        echo "login to dockerhub"
+        docker login --username charmflex --password 2506980106Ming
+        echo "push to dockerhub"
+        docker push charmflex/fem_db
