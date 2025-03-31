@@ -1,20 +1,14 @@
 name: DB Docker Image CI
 
 on:
-  push:
-    branches: [ "main" ]
-    paths: 
-      - 'deploy/db/**'
+  workflow_dispatch
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-    env:
-      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: Replacing placeholders of application properties
@@ -33,6 +27,6 @@ jobs:
         echo "renaming image"
         docker tag flexiexpensesmanager_backend-db charmflex/fem_db
         echo "login to dockerhub"
-        docker login --username charmflex --password 2506980106Ming
+        docker login --username ${{ secrets.DOCKER_LOGIN_USERNAME }} --password ${{ secrets.DOCKER_LOGIN_PW }}
         echo "push to dockerhub"
         docker push charmflex/fem_db
