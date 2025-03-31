@@ -4,6 +4,8 @@ WORKDIR /app
 
 # Copy the Gradle or Maven project files and download dependencies
 COPY ../../build.gradle.kts ./
+COPY ../../gradlew ./
+COPY ../../gradle ./gradle
 # download and cache dependencies
 RUN ./gradlew dependencies
 
