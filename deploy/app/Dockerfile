@@ -14,7 +14,7 @@ COPY ../.. .
 RUN ./gradlew clean build -x test
 
 # 🔥 Stage 2: Use Distroless to Run the App Securely
-FROM gcr.io/distroless/java17-debian12:nonroot-amd64
+FROM gcr.io/distroless/java17-debian12:nonroot
 WORKDIR /app
 
 # Copy the built JAR from the builder stage
